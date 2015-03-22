@@ -59,6 +59,12 @@ var UserSchema = new Schema({
 		default: '',
 		validate: [validateLocalStrategyPassword, 'Password should be longer']
 	},
+	netID: {
+		type: String,
+		unique: 'User with this netID already exists',
+		required: 'User must have a netID',
+		trim: true
+	},
 	salt: {
 		type: String
 	},

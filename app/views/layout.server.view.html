@@ -58,6 +58,11 @@
 		var user = {{ user | json | safe }};
 	</script>
 
+	<!--Embedding Google Maps-->
+	<script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
+	<script src='/path/to/lodash[.min].js'></script>
+	<script src='/path/to/angular-google-maps[.min].js'></script>
+
 	<!--Application JavaScript Files-->
 	{% for jsFile in jsFiles %}
 		<script type="text/javascript" src="{{jsFile}}"></script>
