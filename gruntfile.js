@@ -14,6 +14,28 @@ module.exports = function(grunt) {
 	// Project Configuration
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
+		less: {
+		    production: {
+		        options: {
+		            paths: ['public/less'],
+		            cleancss: true,
+		            compress: true
+		        },
+		        files: {
+		            'public/application.min.css': 'public/less/application.less'
+		        }
+		    },
+		    development: { 
+		        options: { 
+		            sourceMap: true, 
+		            ieCompat:true, 
+		            dumpLineNumbers:true 
+		        },
+		        files: {
+		            'public/application.min.css': 'public/less/application.less'
+		        }
+		    }
+		},
 		watch: {
 			serverViews: {
 				files: watchFiles.serverViews,
@@ -69,23 +91,6 @@ module.exports = function(grunt) {
 				src: watchFiles.clientCSS
 			}
 		},
-		uglify: {
-			production: {
-				options: {
-					mangle: false
-				},
-				files: {
-					'public/dist/application.min.js': 'public/dist/application.js'
-				}
-			}
-		},
-		cssmin: {
-			combine: {
-				files: {
-					'public/dist/application.min.css': '<%= applicationCSSFiles %>'
-				}
-			}
-		},
 		nodemon: {
 			dev: {
 				script: 'server.js',
@@ -112,7 +117,7 @@ module.exports = function(grunt) {
 		ngAnnotate: {
 			production: {
 				files: {
-					'public/dist/application.js': '<%= applicationJavaScriptFiles %>'
+					'public/application.js': '<%= applicationJavaScriptFiles %>'
 				}
 			}
 		},
@@ -149,6 +154,8 @@ module.exports = function(grunt) {
 	// Load NPM tasks
 	require('load-grunt-tasks')(grunt);
 
+	grunt.loadNpmTasks('grunt-contrib-less');
+
 	// Making grunt default to force in order not to break the project.
 	grunt.option('force', true);
 
@@ -174,7 +181,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('lint', ['jshint', 'csslint']);
 
 	// Build task(s).
-	grunt.registerTask('build', ['lint', 'loadConfig', 'ngAnnotate', 'uglify', 'cssmin']);
+	grunt.registerTask('build', ['lint', 'loadConfig', 'ngAnnotate', 'less']);
 
 	// Test task.
 	grunt.registerTask('test', ['test:server', 'test:client']);
