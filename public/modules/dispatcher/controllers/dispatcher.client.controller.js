@@ -1,24 +1,89 @@
 'use strict';
 
-angular.module('dispatcher').controller('AuthenticationController', ['$scope', '$http', '$location', 'Authentication',
+angular.module('dispatcher').controller('DispatcherController', ['$scope', '$http', '$location', 'Authentication',
 	function($scope, $http, $location, Authentication) {
 		$scope.authentication = Authentication;
+
+		$scope.bus = {number:'1', location: {latitude: 40.3492, longitude: -74.6493}, full: 'false'};
+		$scope.bus2 = {number:'1', location: {latitude: 40.3592, longitude: -74.6513}, full: 'false'};
+
+		$scope.system = {paused:'false'};
 
 		// If user is signed in then redirect back home
 		if ($scope.authentication.user) $location.path('/');
 
-		$scope.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
+		$scope.riders = 
+			[{order: 1, netid: 'gtl', time: 5, start: {latitude: 40.3392, longitude: -74.6433}, stop: {latitude: 40.3432, longitude: -74.6393}}, 
+			{order: 2, netid: 'jaevans', time: 10, start: {latitude: 40.3392, longitude: -74.6493}, stop: {latitude: 40.3492, longitude: -74.6393}}, 
+			{order: 3, netid: 'charlie', time:9, start: {latitude: 40.3392, longitude: -74.6493}, stop: {latitude: 40.3492, longitude: -74.6393}}
+		];
 
-		$scope.request = function() {
-			// $http.post('/dispatcher', $scope.credentials).success(function(response) {
-			// 	// If successful we assign the response to the global user model
-			// 	$scope.authentication.request = response;
+		$scope.myMap = { center: {latitude: 40.3468, longitude: -74.6554}, zoom: 15 };
 
-			// 	// And redirect to the index page
-			// 	$location.path('/dispatcher');
-			// }).error(function(response) {
-			// 	$scope.error = response.message;
-			// });
+		$scope.init = function() {
+			console.log('init');
 		};
+
+		$scope.$on('mapInitialized', function(event, map) {
+	  //   	console.log('mapInitialized');
+	  //   	var latLng = new google.maps.LatLng($scope.riders.rider1.start.latitude, $scope.riders.rider1.start.longitude);
+			// var marker = new google.maps.Marker({
+			//     position: latLng,
+			//     title:"Hello World!",
+			//     icon: "/modules/rider/img/current.png"
+			// });
+
+			// var busMarker = new google.maps.Marker({
+			//       position: new google.maps.LatLng($scope.bus.location.latitude, $scope.bus.location.longitude),
+			//       title: 'Tester',
+			//       animation: 'Animation.BOUNCE',
+			//       icon: '/modules/rider/img/bus.png'
+			// });
+			// busMarker.setMap(map);
+			// console.log(marker);
+			// var latLng = new google.maps.LatLng(0,0);
+			// map.setCenter(latLng);
+	    });
+
+		$scope.$watch('$viewContentLoaded', function(){
+		    console.log('content loaded');
+		    
+		 });
+
+		$scope.busFull = function() {
+			console.log('bus is full');
+			$scope.bus.full = 'true';
+			$scope.system.paused = 'true';
+			// send message to all riders
+			// freeze time
+		};
+
+		$scope.busNotFull = function() {
+			console.log('bus no longer full');
+			$scope.bus.full = 'false';
+			$scope.system.paused = 'false';
+			// send message to all riders
+			// update times??
+		};
+
+		$scope.pause = function() {
+			$scope.system.paused = 'true';
+			// freeze time
+		};
+
+		$scope.unpause = function() {
+			$scope.system.paused = 'false';
+			// unfreeze time
+		};
+
+		$scope.addTime = function(addition) {
+			angular.forEach($scope.riders, function(rider, riderNum) {
+				console.log(rider);
+				rider.time += addition;
+				console.log(rider.time);
+			})
+		};
+
+
 	}
 ]);

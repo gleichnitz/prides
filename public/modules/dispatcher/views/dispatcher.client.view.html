@@ -1,22 +1,82 @@
-<section class="row" data-ng-controller="AuthenticationController">
-	<div>
-		<h3 class="col-md-12 text-center">Hi, I am the dispatcher</h3>
-		<span> Queue </span>
+<body>
+<section class="container-fluid" data-ng-controller="DispatcherController">
+
+<div class="row">
+	<div class="col-xs-9">
+		<div class="row" style="padding-bottom: 10px">
+			<div class="col-xs-3">
+				<div class="btn btn-primary btn-block" ng-click="busFull()" ng-hide="bus.full">Bus is full</div>
+				<div class="btn btn-primary btn-block" ng-click="busNotFull()" ng-show="bus.full">Bus has room</div>
+			</div>
+			<div class="col-xs-3">
+				<div class="btn btn-warning btn-block" ng-click="addTime(5)"> +5 min </div>
+			</div>
+			<div class="col-xs-3">
+				<div class="btn btn-warning btn-block" ng-click="addTime(10)"> +10 min </div>
+			</div>
+			<div class="col-xs-3">
+				<div class="btn btn-danger btn-block" ng-click="pause()" ng-hide="system.paused">Pause</div>
+				<div class="btn btn-success btn-block" ng-click="unpause()" ng-show="system.paused">Unpause</div>
+			</div>
+		</div>
+		<div class="row">
+			<map zoom="{{map.zoom}}" 
+		  		center="[{{myMap.center.latitude}},{{myMap.center.longitude}}]"
+		  		style-"z-index:-1;">
+		  		<marker
+			      position="{{bus.location.latitude}}, {{bus.location.longitude}}"
+			      title="P-Rides Bus"
+			      animation="Animation.BOUNCE"
+			      draggable="false"
+			      visible="true"
+			      icon="/modules/rider/img/bus.png">
+			  	</marker>
+			</map>
+		</div>
 	</div>
 
-	<map zoom="15" 
-	  center="[40.3487, -74.6593]">
-  		<marker
-	      position="[40.3492, -74.6493]"
-	      title="P-Rides Bus"
-	      animation="Animation.BOUNCE"
-	      draggable="true"
-	      visible="true"
-	      icon="/modules/dispatcher/img/pin.jpeg">
-	  	</marker>
-	</map>
+	<div class="col-xs-3">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="center-text"> Queue </div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<table class="table table-hover table-bordered">
+			  		<thead>
+			            <tr>
+			                <th>#</th>
+			                <th>Rider</th>
+			                <th>Time</th>
+			            </tr>
+			        </thead>
+			        <tbody ui:sortable ng:model="riders">
+			            <tr ng:repeat="rider in riders | orderBy:'time'">
+			                <td>{{$index + 1}}</td>
+			                <td>{{rider.netid}}</td>
+			                <td> 
+			                	<input type="number" ng-model="rider.time" size="2"> 
+			                </td>
+			            </tr>
+			        </tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<a> Download Log </a>
+			</div>
+		</div>
+	</div>		
 
-	<!--<script src='/lib/lodash/dist/lodash.min.js'></script> 
-	<script src='/lib/angular-google-maps/dist/angular-google-maps.min.js'></script> -->
-	<script src="http://rawgit.com/allenhwkim/angularjs-google-maps/master/build/scripts/ng-map.min.js"></script>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="http://code.angularjs.org/1.0.2/angular.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
+</div>
+
 </section>
+</body>

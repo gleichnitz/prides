@@ -8,7 +8,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 
@@ -31,13 +31,17 @@
 	<meta name="twitter:url" content="{{url}}">
 	<meta name="twitter:image" content="/img/brand/logo.png">
 
+	<!-- Boostrap -->
+	<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="lib/bootstrap/dist/css/custom.css">
+
 	<!-- Fav Icon -->
 	<link href="/modules/core/img/brand/favicon.ico" rel="shortcut icon" type="image/x-icon">
 
-	<!--Application CSS Files-->
+	<!--
 	{% for cssFile in cssFiles %}
 		<link rel="stylesheet" href="{{cssFile}}">
-	{% endfor %}
+	{% endfor %} -->
 
 	<!-- HTML5 Shim -->
 	<!--[if lt IE 9]>
@@ -57,9 +61,6 @@
 	<script type="text/javascript">
 		var user = {{ user | json | safe }};
 	</script>
-
-	<!--Embedding Google Maps-->
-	<script src="http://maps.google.com/maps/api/js"></script>
 
 	<!--Application JavaScript Files-->
 	{% for jsFile in jsFiles %}
