@@ -5,20 +5,20 @@
  */
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
-	Bus = mongoose.model('Bus'),
+	Dispatcher = mongoose.model('Dispatcher'),
 	_ = require('lodash');
 
 exports.create = function(req, res) {
-	console.log('BUS BEING CREATED');
-	var bus = new Bus(req.body);
+	console.log('DISPATCHER BEING CREATED');
+	var dispatcher = new Dispatcher(req.body);
 
-	bus.save(function(err) {
+	dispatcher.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(bus);
+			res.json(dispatcher);
 		}
 	});
 };
@@ -27,13 +27,13 @@ exports.create = function(req, res) {
  * List of Buses
  */
 exports.list = function(req, res) {
-	Bus.find().sort('-created').exec(function(err, buses) {
+	Dispatcher.find().sort('-created').exec(function(err, dispatchers) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(buses);
+			res.json(dispatchers);
 		}
 	});
 };

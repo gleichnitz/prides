@@ -13,9 +13,9 @@ angular.module('dispatcher').controller('DispatcherController', ['$scope', '$htt
 		if ($scope.authentication.user) $location.path('/');
 
 		$scope.riders = 
-			[{order: 1, netid: 'gtl', time: 5, start: {latitude: 40.3392, longitude: -74.6433}, stop: {latitude: 40.3432, longitude: -74.6393}}, 
-			{order: 2, netid: 'jaevans', time: 10, start: {latitude: 40.3392, longitude: -74.6493}, stop: {latitude: 40.3492, longitude: -74.6393}}, 
-			{order: 3, netid: 'charlie', time:9, start: {latitude: 40.3392, longitude: -74.6493}, stop: {latitude: 40.3492, longitude: -74.6393}}
+			[{order: 1, netid: 'gtl', time: 5, start: {latitude: 40.342329, longitude: -74.657848}, stop: {latitude: 40.348012, longitude: -74.652913}}, 
+			{order: 2, netid: 'jaevans', time: 10, start: {latitude: 40.347329, longitude: -74.657248}, stop: {latitude: 40.345329, longitude: -74.657848}}, 
+			{order: 3, netid: 'charlie', time:9, start: {latitude: 40.342267, longitude: -74.662503}, stop: {latitude: 40.347267, longitude: -74.661603}}
 		];
 
 		$scope.myMap = { center: {latitude: 40.3468, longitude: -74.6554}, zoom: 15 };
@@ -81,7 +81,7 @@ angular.module('dispatcher').controller('DispatcherController', ['$scope', '$htt
 				console.log(rider);
 				rider.time += addition;
 				console.log(rider.time);
-			})
+			});
 		};
 
 

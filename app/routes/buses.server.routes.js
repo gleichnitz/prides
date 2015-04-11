@@ -9,7 +9,7 @@ var users = require('../../app/controllers/users.server.controller'),
 module.exports = function(app) {
 	// Bus Routes
 	app.route('/buses')
-		.get(users.requiresLogin) // all users can view
-		.post(users.requiresLogin, buses.create); // only admin can create
+		.get(buses.list) // all users can view
+		.post(buses.create); // only admin can create
 	
 };

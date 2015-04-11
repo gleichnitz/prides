@@ -9,6 +9,6 @@ var users = require('../../app/controllers/users.server.controller'),
 module.exports = function(app) {
 	// Rider Routes
 	app.route('/riders')
-		.get(users.requiresLogin) // all users can view
+		.get(riders.list) // all users can view
 		.post(riders.create); // only admin can create
 };

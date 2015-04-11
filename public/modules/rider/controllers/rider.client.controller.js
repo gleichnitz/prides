@@ -11,9 +11,9 @@ angular.module('rider').controller('RiderController', ['$scope', '$http', '$loca
 		$scope.requested = 'false';
 
 		$scope.riders = 
-			[{order: 1, netid: 'gtl', time: 5, start: {latitude: 40.3392, longitude: -74.6433}, stop: {latitude: 40.3482, longitude: -74.6483}}, 
-			{order: 2, netid: 'jaevans', time: 10, start: {latitude: 40.3392, longitude: -74.6493}, stop: {latitude: 40.3492, longitude: -74.6503}}, 
-			{order: 3, netid: 'charlie', time:9, start: {latitude: 40.3392, longitude: -74.6493}, stop: {latitude: 40.3482, longitude: -74.6498}}
+			[{order: 1, netid: 'gtl', time: 5, start: {latitude: 40.342329, longitude: -74.657848}, stop: {latitude: 40.348012, longitude: -74.652913}}, 
+			{order: 2, netid: 'jaevans', time: 10, start: {latitude: 40.347329, longitude: -74.657248}, stop: {latitude: 40.345329, longitude: -74.657848}}, 
+			{order: 3, netid: 'charlie', time:9, start: {latitude: 40.342267, longitude: -74.662503}, stop: {latitude: 40.347267, longitude: -74.661603}}
 		];
 
 		$scope.myMap = { 
@@ -136,5 +136,5 @@ angular.module('rider').controller('RiderController', ['$scope', '$http', '$loca
 			    false
 			);
         }
-    }
+    };
 });

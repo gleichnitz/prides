@@ -25,11 +25,11 @@
 		      icon="/modules/rider/img/current.png">
 		  	</marker>
 		  	<marker ng-repeat="rider in riders | orderBy:'time'"
-		  	  position="{{rider.stop.latitude}}, {{rider.stop.longitude}}"
+		  	  position="{{rider.start.latitude}}, {{rider.start.longitude}}"
 		      title="Stop"
 		      draggable="false"
 		      visible="true"
-		      icon="/modules/rider/img/current.png">
+		      icon="/modules/rider/img/{{$index+1}}.png">
 		  	</marker>
 		</map>
 		<div class="request opaque" ng-hide="requested" style="display:block;">
