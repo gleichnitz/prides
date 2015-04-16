@@ -24,7 +24,7 @@ exports.create = function(req, res) {
 };
 
 /**
- * List of Buses
+ * List of Dispatchers
  */
 exports.list = function(req, res) {
 	Dispatcher.find().sort('-created').exec(function(err, dispatchers) {
@@ -34,6 +34,49 @@ exports.list = function(req, res) {
 			});
 		} else {
 			res.json(dispatchers);
+		}
+	});
+};
+
+/**
+ * Show the current dispatcher
+ */
+exports.read = function(req, res) {
+	res.json(req.dispatcher);
+};
+
+/**
+ * Update a dispatcher
+ */
+exports.update = function(req, res) {
+	var dispatcher = req.dispatcher;
+
+	dispatcher = _.extend(dispatcher, req.body);
+
+	dispatcher.save(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.json(dispatcher);
+		}
+	});
+};
+
+/**
+ * Delete a dispatcher
+ */
+exports.delete = function(req, res) {
+	var dispatcher = req.dispatcher;
+
+	dispatcher.remove(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.json(dispatcher);
 		}
 	});
 };

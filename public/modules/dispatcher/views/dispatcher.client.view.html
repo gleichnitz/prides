@@ -1,5 +1,5 @@
 <body>
-<section class="container-fluid" data-ng-controller="DispatcherController">
+<section class="container-fluid" data-ng-controller="DispatcherController" data-ng-init="init()">
 
 <div class="row">
 	<div class="col-xs-9">
@@ -32,14 +32,14 @@
 			      icon="/modules/rider/img/bus.png">
 			  	</marker>
 			  	<marker ng-repeat="rider in riders | orderBy:'time'"
-			  	  position="{{rider.start.latitude}}, {{rider.start.longitude}}"
+			  	  position="{{rider.startLatitude}}, {{rider.startLongitude}}"
 			      title="Stop"
 			      draggable="false"
 			      visible="true"
 			      icon="/modules/rider/img/{{$index+1}}_end.png">
 		  		</marker>
 		  		<marker ng-repeat="rider in riders | orderBy:'time'"
-			  	  position="{{rider.stop.latitude}}, {{rider.stop.longitude}}"
+			  	  position="{{rider.endLatitude}}, {{rider.endLongitude}}"
 			      title="Stop"
 			      draggable="false"
 			      visible="true"
