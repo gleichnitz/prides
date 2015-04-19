@@ -4,7 +4,7 @@
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'mean';
-	var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ui.router', 'ui.bootstrap', 'ui.utils', 'uiGmapgoogle-maps', 'ngMap'];
+	var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ui.router', 'ui.bootstrap', 'ui.utils', 'uiGmapgoogle-maps', 'ngMap', 'ngDialog', 'modelOptions'];
 
 	// Add a new vertical module
 	var registerModule = function(moduleName, dependencies) {
@@ -27,7 +27,7 @@ var ApplicationConfiguration = (function() {
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'mean';
-	var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ui.router', 'ui.bootstrap', 'ui.utils', 'uiGmapgoogle-maps', 'ngMap'];
+	var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ui.router', 'ui.bootstrap', 'ui.utils', 'uiGmapgoogle-maps', 'ngMap', 'ngDialog', 'modelOptions'];
 
 	// Add a new vertical module
 	var registerModule = function(moduleName, dependencies) {
@@ -50,7 +50,7 @@ var ApplicationConfiguration = (function() {
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'mean';
-	var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ui.router', 'ui.bootstrap', 'ui.utils', 'uiGmapgoogle-maps', 'ngMap'];
+	var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ui.router', 'ui.bootstrap', 'ui.utils', 'uiGmapgoogle-maps', 'ngMap', 'ngDialog', 'modelOptions'];
 
 	// Add a new vertical module
 	var registerModule = function(moduleName, dependencies) {
@@ -73,7 +73,7 @@ var ApplicationConfiguration = (function() {
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'mean';
-	var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ui.router', 'ui.bootstrap', 'ui.utils', 'uiGmapgoogle-maps', 'ngMap'];
+	var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ui.router', 'ui.bootstrap', 'ui.utils', 'uiGmapgoogle-maps', 'ngMap', 'ngDialog'];
 
 	// Add a new vertical module
 	var registerModule = function(moduleName, dependencies) {
@@ -1028,10 +1028,6 @@ ApplicationConfiguration.registerModule('core');
 
 // Use Application configuration module to register a new module
 ApplicationConfiguration.registerModule('dispatcher');
-'use strict';
-
-// Use Application configuration module to register a new module
-ApplicationConfiguration.registerModule('users');
 'use strict';
 
 // Use Application configuration module to register a new module

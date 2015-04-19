@@ -1,9 +1,20 @@
 <body>
-<section class="container-fluid" data-ng-controller="RiderController">
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=initialize"></script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+
+<section class="container-fluid" data-ng-controller="RiderController" data-ng-init="init()">
 
 <div class="container-full">
 
-	<div style="display:block; width: 100%" droppable drop="handleDrop()">
+	<ui-gmap-google-map center='map.center' zoom='map.zoom'></ui-gmap-google-map>
+
+	<div id="map_canvas" style="width:50%; height:50%"></div>
+
+	<!-- <div style="display:block; width: 100%" droppable drop="handleDrop()">
 		<map zoom="{{map.zoom}}" 
 		  center="[{{myMap.center.latitude}},{{myMap.center.longitude}}]"
 		  pan="true"
@@ -31,6 +42,13 @@
 		      visible="true"
 		      icon="/modules/rider/img/{{$index+1}}.png">
 		  	</marker>
+		  	<marker 
+		  	  position="{{user.location.latitude+0.0002}}, {{user.location.longitude+0.0002}}"
+		      title="Start Location"
+		      draggable="true"
+		      visible="true"
+		      icon="/modules/rider/img/start.png">
+		  	</marker>
 		</map>
 		<div class="request opaque" ng-hide="requested" style="display:block;">
 			<div class="btn btn-primary btn-block" ng-click="request()">Request</div>
@@ -50,13 +68,10 @@
 				</img>
 			</rect>
 		</div>
-	</div>
+	</div> -->
 
 </div>
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
+
 
 </section>
 </body>

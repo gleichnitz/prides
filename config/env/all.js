@@ -51,10 +51,12 @@ module.exports = {
 				'public/lib/angular-ui-router/release/angular-ui-router.js',
 				'public/lib/angular-ui-utils/ui-utils.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
-				'//maps.googleapis.com/maps/api/js?sensor=false',
+				'http://maps.googleapis.com/maps/api/js?sensor=false',
            	 	'public/lib/lodash/dist/lodash.underscore.js',
+           	 	'public/lib/lodash/dist/lodash.min.js',
             	'public/lib/angular-google-maps/dist/angular-google-maps.js',
-            	'public/lib/ngmap/build/scripts/ng-map.min.js'
+            	'public/lib/ngmap/build/scripts/ng-map.min.js',
+            	'public/lib/ngDialog/js/ngDialog.js'
 			]
 		},
 		css: [

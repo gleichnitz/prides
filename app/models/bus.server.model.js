@@ -18,6 +18,10 @@ var BusSchema = new Schema({
 		type: Boolean,
 		default: false	
 	},
+	paused: {
+		type: Boolean,
+		default: false
+	},
 	number: {
 		type: Number,
 		default: '1',
@@ -35,11 +39,11 @@ var BusSchema = new Schema({
 	numRiders: {
 		type: Number,
 		default: '0',
-	},
-	queue: {
-		type: Schema.ObjectId,
-		ref: 'Queue'
 	}
+	// queue: {
+	// 	type: Schema.ObjectId,
+	// 	ref: 'Queue'
+	// }
 });
 
 mongoose.model('Bus', BusSchema);

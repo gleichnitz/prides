@@ -51,6 +51,9 @@
 
 <body class="ng-cloak">
 	<header data-ng-include="'/modules/core/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse"></header>
+
+	<script src='http://maps.googleapis.com/maps/api/js?sensor=false'></script>
+
 	<section class="content">
 		<section class="container">
 			{% block content %}{% endblock %}
@@ -66,6 +69,9 @@
 	{% for jsFile in jsFiles %}
 		<script type="text/javascript" src="{{jsFile}}"></script>
 	{% endfor %}
+
+	<script src='/lib/lodash/dist/lodash.min.js'></script>
+	<script src='/lib/angular-google-maps/dist/angular-google-maps.js'></script>	
 
 	{% if process.env.NODE_ENV === 'development' %}
 	<!--Livereload script rendered -->

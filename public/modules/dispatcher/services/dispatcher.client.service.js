@@ -25,6 +25,18 @@ angular.module('dispatcher').factory('DispatcherFactory', ['$resource',
 	}
 ]);
 
+angular.module('dispatcher').factory('BusFactory', ['$resource',
+	function($resource) {
+		return $resource('/buses/:busID', {
+			dispatcherID: '@_id'
+		}, {
+			update: {
+				method: 'PUT'
+			}
+		});
+	}
+]);
+
 angular.module('dispatcher').factory('RiderFactory', ['$resource',
 	function($resource) {
 		return $resource('/riders/:riderID', {

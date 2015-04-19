@@ -1,3 +1,4 @@
+
 'use strict';
 
 /**
@@ -50,6 +51,14 @@ var RiderSchema = new Schema({
 		type: Number,
 		default: '30',
 		trim: true
+	},
+	inQueue: {
+		type: Boolean,
+		default: true
+	},
+	cancelled: {
+		type: Boolean,
+		default: false
 	}
 });
 

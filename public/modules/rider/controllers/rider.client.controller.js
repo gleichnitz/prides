@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('rider').controller('RiderController', ['$scope', '$http', '$location', 'Authentication', 'RequestFactory', 
-	function($scope, $http, $location, Authentication, RequestFactory) {
+angular.module('rider').controller('RiderController', ['$scope', '$http', '$location', 'Authentication', 'RequestFactory', 'uiGmapGoogleMapApi', 
+	function($scope, $http, $location, Authentication, RequestFactory, uiGmapGoogleMapApi) {
+
 		$scope.authentication = Authentication;
 
 		$scope.bus = {number:'1', location: {latitude: 40.3492, longitude: -74.6493}};
@@ -10,13 +11,15 @@ angular.module('rider').controller('RiderController', ['$scope', '$http', '$loca
 
 		$scope.requested = 'false';
 
+		var map;
+
 		$scope.riders = 
 			[{order: 1, netid: 'gtl', time: 5, start: {latitude: 40.342329, longitude: -74.657848}, stop: {latitude: 40.348012, longitude: -74.652913}}, 
 			{order: 2, netid: 'jaevans', time: 10, start: {latitude: 40.347329, longitude: -74.657248}, stop: {latitude: 40.345329, longitude: -74.657848}}, 
 			{order: 3, netid: 'charlie', time:9, start: {latitude: 40.342267, longitude: -74.662503}, stop: {latitude: 40.347267, longitude: -74.661603}}
 		];
 
-		$scope.myMap = { 
+		$scope.map = { 
 			center: {
 				latitude: 40.3468, 
 				longitude: -74.6553
@@ -25,6 +28,28 @@ angular.module('rider').controller('RiderController', ['$scope', '$http', '$loca
 		};
 
 		$scope.user = { id:'gtl', location: {latitude: 40.3468, longitude: -74.6553}};
+
+		$scope.startLatitude = {latitude: $scope.user.location.latitude, longitude: $scope.user.location.longitude};
+
+		$scope.init = function() {
+			console.log('init');
+		    var myLatlng = new google.maps.LatLng(40.713956,-74.006653);
+
+		    var myOptions = {
+		    	zoom: 8,
+		     	center: myLatlng,
+		      	mapTypeId: google.maps.MapTypeId.ROADMAP
+		    };
+
+		    map = new google.maps.Map(document.getElementById('map_canvas'), myOptions); 
+		     	var marker = new google.maps.Marker({
+			  	draggable: true,
+			  	position: myLatlng, 
+			  	map: map,
+			  	title: 'P-Rides Map'
+			});
+		};
+
 
 		$scope.request = function() {
 			console.log('requested');
@@ -48,6 +73,10 @@ angular.module('rider').controller('RiderController', ['$scope', '$http', '$loca
 		$scope.handleDrop = function() {
 			console.log('dropped');
 		};
+
+		uiGmapGoogleMapApi.then(function(maps) {
+			// callback provides google map object
+    	});
 	}
 ]).directive('draggable', function() {
 	return function(scope, element) {
@@ -120,6 +149,7 @@ angular.module('rider').controller('RiderController', ['$scope', '$http', '$loca
 
 			        this.classList.remove('over');
 
+			        var binId = this.id;
 			        var item = document.getElementById(e.dataTransfer.getData('Text'));
 			        this.appendChild(item);
 
