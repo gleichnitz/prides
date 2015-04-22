@@ -23,29 +23,29 @@ var RiderSchema = new Schema({
 	},
     phoneNumber: {
 		type: Number,
-		default: '',
+		default: '9495545306',
 		trim: true,
 		required: 'phone number cannot be blank'
 	},
-	startLatitude: {
-		type: Number,
-		default: '',
-		trim: true
+	startCoords: {
+		latitude: {
+			type: Number,
+			default: '40.3468'
+		}, 
+		longitude: {
+			type: Number,
+			default: '-74.6553'
+		}	
 	},
-    startLongitude: {
-		type: Number,
-		default: '',
-		trim: true
-	},
-	endLatitude: {
-		type: Number,
-		default: '',
-		trim: true
-	},
-	endLongitude: {
-		type: Number,
-		default: '',
-		trim: true
+	endCoords: {
+		latitude: {
+			type: Number,
+			default: '40.3468'
+		}, 
+		longitude: {
+			type: Number,
+			default: '-74.6553'
+		}	
 	},
 	time: {
 		type: Number,

@@ -1,77 +1,68 @@
 <body>
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=initialize"></script>
 
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-
-<section class="container-fluid" data-ng-controller="RiderController" data-ng-init="init()">
+<section class="container-fluid" data-ng-controller="RiderController">
 
 <div class="container-full">
 
-	<ui-gmap-google-map center='map.center' zoom='map.zoom'></ui-gmap-google-map>
+ 	<ui-gmap-google-map center='map.center' zoom='map.zoom'>
 
-	<div id="map_canvas" style="width:50%; height:50%"></div>
+ 		<ui-gmap-marker ng-repeat="rider in riders | orderBy:'time'"
+ 			idKey='index+1'
+ 			coords='rider.startCoords'
+ 			visible='true'
+ 			icon='getImage($index+1)'>
+ 		</ui-gmap-marker>
+ 		<ui-gmap-marker ng-repeat="rider in riders | orderBy:'time'"
+ 			idKey='index+13'
+ 			coords='rider.endCoords'
+ 			visible='true'
+ 			icon='getImageEnd($index+1)'>
+ 		</ui-gmap-marker>
+ 		<ui-gmap-marker 
+ 			idKey='0'
+ 			coords='user.loc'
+ 			visible='true'
+ 			icon='currentMarker'>
+ 		</ui-gmap-marker>
+ 		<ui-gmap-marker 
+ 			idKey='-3'
+ 			coords='bus.coords'
+ 			visible="true"
+ 			icon='busMarker'>
+ 		</ui-gmap-marker>
+ 		<ui-gmap-marker 
+ 			idKey='-1'
+ 			coords='user1.startCoords'
+ 			visible='true'
+ 			events="startMarker.events"
+ 			options="startMarker.options"
+ 			icon='startMarker.icon'>
+ 		</ui-gmap-marker>
+ 		<ui-gmap-marker 
+ 			idKey='-2'
+ 			coords='user1.endCoords'
+ 			visible='true'
+ 			events="endMarker.events"
+ 			options="endMarker.options"
+ 			icon='endMarker.icon'>
+ 		</ui-gmap-marker>
 
-	<!-- <div style="display:block; width: 100%" droppable drop="handleDrop()">
-		<map zoom="{{map.zoom}}" 
-		  center="[{{myMap.center.latitude}},{{myMap.center.longitude}}]"
-		  pan="true"
-		  style="height: 100%; width: 100%; z-index: -1;"
-		  class="rider-map">
-	  		<marker
-		      position="{{bus.location.latitude}}, {{bus.location.longitude}}"
-		      title="P-Rides Bus"
-		      animation="Animation.BOUNCE"
-		      draggable="false"
-		      visible="true"
-		      icon="/modules/rider/img/bus.png">
-		  	</marker>
-		  	<marker
-		      position="{{user.location.latitude}}, {{user.location.longitude}}"
-		      title="User"
-		      draggable="false"
-		      visible="true"
-		      icon="/modules/rider/img/current.png">
-		  	</marker>
-		  	<marker ng-repeat="rider in riders | orderBy:'time'"
-		  	  position="{{rider.start.latitude}}, {{rider.start.longitude}}"
-		      title="Stop"
-		      draggable="false"
-		      visible="true"
-		      icon="/modules/rider/img/{{$index+1}}.png">
-		  	</marker>
-		  	<marker 
-		  	  position="{{user.location.latitude+0.0002}}, {{user.location.longitude+0.0002}}"
-		      title="Start Location"
-		      draggable="true"
-		      visible="true"
-		      icon="/modules/rider/img/start.png">
-		  	</marker>
-		</map>
-		<div class="request opaque" ng-hide="requested" style="display:block;">
-			<div class="btn btn-primary btn-block" ng-click="request()">Request</div>
-		</div>
-		<div class="cancel opaque" ng-show="requested" style="display:block;">
-			<div class="btn btn-danger btn-block" ng-click="cancel()">Cancel</div>
-		</div>
-		<div class="pinbox" style="display:block;">
-			<rect> 
-				<img 
-					class="pins" src="/modules/rider/img/start.png" 
-					height="28" draggable> 
-				</img>
-				<img 
-					class="pins" src="/modules/rider/img/end.png" 
-					height="28" draggable> 
-				</img>
-			</rect>
-		</div>
-	</div> -->
+ 	</ui-gmap-google-map>
+
+	<div class="request opaque" ng-hide="user1.inQueue" style="display:block;">
+		<div class="btn btn-primary btn-block" ng-click="request()">Request</div>
+	</div>
+	<div class="cancel opaque" ng-show="user1.inQueue" style="display:block;">
+		<div class="btn btn-danger btn-block" ng-click="cancel()">~ {{user1.time}} min - Cancel</div>
+	</div>
 
 </div>
 
-
 </section>
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
 </body>

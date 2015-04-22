@@ -1,5 +1,5 @@
 <body>
-<section class="container-fluid" data-ng-controller="DispatcherController" data-ng-init="init()">
+<section class="container-fluid" data-ng-controller="DispatcherController">
 
 <div class="row">
 	<div class="col-xs-9">
@@ -20,11 +20,29 @@
 			</div>
 		</div>
 		<div class="row">
-			<map zoom="{{map.zoom}}" 
+			<ui-gmap-google-map center='map.center' zoom='map.zoom'>
+				<ui-gmap-marker ng-repeat="rider in riders | orderBy:'time'"
+		 			idKey='index+1'
+		 			coords='rider.startCoords'
+		 			visible="true"
+		 			icon='getImage($index+1)'>
+		 		</ui-gmap-marker>
+		 		<ui-gmap-marker ng-repeat="rider in riders | orderBy:'time'"
+		 			idKey='index+13'
+		 			coords='rider.endCoords'
+		 			visible="true"
+		 			icon='getImageEnd($index+1)'>
+		 		</ui-gmap-marker>
+		 		<ui-gmap-marker 
+		 			idKey='-3'
+		 			coords='bus.coords'
+		 			visible="true"
+		 			icon='busMarker'>
+				</ui-gmap-google-map>
+			<!-- <map zoom="{{map.zoom}}" 
 		  		center="[{{myMap.center.latitude}},{{myMap.center.longitude}}]"
 		  		style="height: 100%; width: 66%%; z-index: -1;" 
-		  		class="rider-map"
-		  		draggable="true">
+		  		class="rider-map">
 		  		<marker
 			      position="{{bus.location.latitude}}, {{bus.location.longitude}}"
 			      title="P-Rides Bus"
@@ -47,7 +65,7 @@
 			      visible="true"
 			      icon="/modules/rider/img/{{$index+1}}.png">
 		  		</marker>
-			</map>
+			</map> -->
 		</div>
 	</div>
 
@@ -75,7 +93,7 @@
 				                <td>{{$index + 1}}</td>
 				                <td>{{rider.netid}}</td>
 				                <td> 
-				                	<input type="number" ng-model-options="{ updateOn: 'blur' }" ng-model="rider.time" size="2" style="width:50px;"> 
+				                	<input type="number" ng-model-options="{ updateOn: 'blur' }" ng-model="rider.time" ng-change="saveRider(rider)" size="2" style="width:50px;"> 
 				                </td>
 				                <td>
 				                	<div class="btn btn-danger btn-block cancelrider" ng-click="dequeueRider(rider)">x</div>
@@ -108,18 +126,17 @@
 			<h3>Add Rider to Queue</h3>
 		</div>
 		<form novalidate class="simple-form">
-		    netid: <input type="text" ng-model="rider.netid" /><br />
-		    Pick up: <input type="number" ng-model="rider.startLatitude" /> , <input type="number" ng-model="rider.startLongitude" /> <br />
-		    Drop off: <input type="number" ng-model="rider.endLatitude" /> , <input type="number" ng-model="rider.endLongitude" /> <br />
+		    netid: <input type="text" ng-model="rider.netid" required /><br />
+		    Pick up: <input type="number" ng-model="rider.startLatitude" required /> , <input type="number" ng-model="rider.startLongitude" required /> <br />
+		    Drop off: <input type="number" ng-model="rider.endLatitude" required /> , <input type="number" ng-model="rider.endLongitude" required /> <br />
 		    Phone number: <input type="tel" ng-model="rider.phoneNumber" /><br />
-		    Time: <input type="number" ng-model="rider.time" /> <br />
-		    <div class="btn btn-success btn-block" ng-click="createNewRider(rider)">+</div> </tr>
-		    <input type="submit" ng-click="update()" value="Save" />
+		    Time: <input type="number" ng-model="rider.time" required /> <br />
+		    <div class="ngdialog-buttons">
+				<button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="createNewRider(rider)">Add</button>
+				<button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeAll()">Cancel</button>
+			</div>
 		</form>
-		<div class="ngdialog-buttons">
-			<button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="createNewRider(rider)">Add</button>
-			<button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeAll()">Cancel</button>
-		</div>
+		
 	</script>
 
 </div>

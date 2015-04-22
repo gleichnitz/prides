@@ -26,19 +26,23 @@ var BusSchema = new Schema({
 		type: Number,
 		default: '1',
 	},
-    longitude: {
-		type: Number,
-		default: '',
-		trim: true
-	},
-	latitude: {
-		type: Number,
-		default: '',
-		trim: true
+	coords: {
+		latitude: {
+			type: Number,
+			default: ''
+		}, 
+		longitude: {
+			type: Number,
+			default: ''
+		}	
 	},
 	numRiders: {
 		type: Number,
 		default: '0',
+	},
+	full: {
+		type: Boolean,
+		default: false
 	}
 	// queue: {
 	// 	type: Schema.ObjectId,
