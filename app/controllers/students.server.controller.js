@@ -5,101 +5,101 @@
  */
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
-	Rider = mongoose.model('Rider'),
+	Student = mongoose.model('Student'),
 	_ = require('lodash');
 
 exports.create = function(req, res) {
 	console.log('RIDER BEING CREATED');
-	var rider = new Rider(req.body);
+	var student = new Student(req.body);
 
-	rider.save(function(err) {
+	student.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(rider);
+			res.json(student);
 		}
 	});
 };
 
 /**
- * List of riders
+ * List of students
  */
 exports.list = function(req, res) {
-	Rider.find().sort('-created').exec(function(err, riders) {
+	Student.find().sort('-created').exec(function(err, students) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(riders);
+			res.json(students);
 		}
 	});
 };
 
 /**
- * Show the current rider
+ * Show the current student
  */
 exports.read = function(req, res) {
-	res.json(req.rider);
+	res.json(req.student);
 };
 
 /**
- * Update a rider
+ * Update a student
  */
 exports.update = function(req, res) {
-	var rider = req.rider;
+	var student = req.student;
 
-	rider = _.extend(rider, req.body);
+	student = _.extend(student, req.body);
 
-	rider.save(function(err) {
+	student.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(rider);
+			res.json(student);
 		}
 	});
 };
 
 /**
- * Delete a rider
+ * Delete a student
  */
 exports.delete = function(req, res) {
-	var rider = req.rider;
+	var student = req.student;
 
-	rider.remove(function(err) {
+	student.remove(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(rider);
+			res.json(student);
 		}
 	});
 };
 
 /**
- * Rider middleware
+ * Student middleware
  */
-exports.riderByID = function(req, res, next, id) {
+exports.studentByID = function(req, res, next, id) {
 
 	if (!mongoose.Types.ObjectId.isValid(id)) {
 		return res.status(400).send({
-			message: 'Rider is invalid'
+			message: 'Student is invalid'
 		});
 	}
 
-	Rider.findById(id).exec(function(err, rider) {
+	Student.findById(id).exec(function(err, student) {
 		if (err) return next(err);
-		if (!rider) {
+		if (!student) {
 			return res.status(404).send({
-  				message: 'Rider not found'
+  				message: 'Student not found'
   			});
 		}
-		req.rider = rider;
+		req.student = student;
 		next();
 	});
 };

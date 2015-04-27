@@ -10,12 +10,50 @@ angular.module('dispatcher').controller('DispatcherController', ['$scope', 'ngDi
 		$scope.updatePromise = null;
 		$scope.bus = null;
 
+		$scope.defaultStart = {
+			latitude: 40.3467,
+			longitude: -74.6551
+		};
+
+		$scope.defaultEnd = {
+			latitude: 40.3469,
+			longitude: -74.6552
+		};
+
 		// If user is signed in then redirect back home
 		if ($scope.authentication.user) $location.path('/');
 
 		// constants
 		$scope.map = { center: {latitude: 40.3468, longitude: -74.6554}, zoom: 15 };
 		$scope.busMarker = '/modules/rider/img/bus.png';
+
+		$scope.marker = {
+			options: {
+				draggable: true
+			}, 
+			startCoords: {
+				latitude: $scope.defaultStart.latitude,
+				longitude: $scope.defaultStart.longitude
+			},
+			endCoords: {
+				latitude: $scope.defaultEnd.latitude,
+				longitude: $scope.defaultEnd.longitude
+			},
+			startIcon: '/modules/rider/img/start.png',
+			endIcon: '/modules/rider/img/end.png',
+			startEvents: {
+				dragend: function (marker, eventName, args) {
+					$scope.marker.startCoords.latitude = marker.getPosition().lat();
+					$scope.marker.startCoords.longitude = marker.getPosition().lng();
+				}
+			},
+			endEvents: {
+				dragend: function (marker, eventName, args) {
+					$scope.marker.endCoords.latitude = marker.getPosition().lat();
+					$scope.marker.endCoords.longitude = marker.getPosition().lng();
+				}
+			}
+		};
 
 		MapIsReady.promise().then(function (maps) {
 	        $scope.myMap = maps[0].map;
@@ -25,18 +63,66 @@ angular.module('dispatcher').controller('DispatcherController', ['$scope', 'ngDi
 		$scope.init = function() {
 			console.log('init');
 			
+			$scope.setMarkerToDefault();
 			$scope.updateFromDatabase();
-			// $scope.createBus(40.3492, -74.6513);
 
 			$scope.updatePromise = $interval(function() { $scope.updateFromDatabase(); }, 10000);
 			// $scope.start();
 		};
+
+		$scope.setMarkerToDefault = function() {
+			$scope.marker.startCoords = {
+				latitude: $scope.defaultStart.latitude,
+				longitude: $scope.defaultStart.longitude
+			};
+			$scope.marker.endCoords = {
+				latitude: $scope.defaultEnd.latitude,
+				longitude: $scope.defaultEnd.longitude
+			};
+		}
 
 		$scope.updateFromDatabase = function() {
 			var newRiders = [];
 			var riders = RiderFactory.query();
 
 			console.log('updated from database');
+
+			/* actual route id = 4000442 */
+			/* last used: 4005134 */
+			/* current; 4005798 */
+			/* tiger line express: 4005794 7 am - 7 pm*/
+			/* tiger line: 4005790 */
+			var req = {
+			 method: 'GET',
+			 url: 'https://transloc-api-1-2.p.mashape.com/vehicles.json?agencies=84&callback=call&routes=4005794',
+			 headers: {
+			   'X-Mashape-Key': 'G7nWYXfIrGmshUUVS8ffX1olPpwsp15SygGjsnkckkdghFexdm'
+			 }
+			};
+
+			$http(req).
+			  success(function(data, status, headers, config) {
+			  	if (data['data']['84'] !== undefined) {
+					var location = data['data']['84'][0]['location'];
+					$scope.bus.coords = {
+						latitude: location['lat'] - 0.0001,
+						longitude: location['lng'] - 0.0001
+					};
+					console.log($scope.bus.coords);
+					$scope.updateBus($scope.bus);
+			  	} else {
+			  		console.log('couldnt get bus coordinates');
+			  		$scope.bus.coords = {
+			  			latitude: 0,
+			  			longitude: 0
+			  		};
+			  		$scope.updateBus($scope.bus);
+			  	}
+			  	
+ 			  }).
+			  error(function(data, status, headers, config) {
+			    console.log('error getting bus location');
+			  });
 			
 			riders.$promise.then(function(riders) {
 				var ridersInQueue = [];
@@ -126,8 +212,6 @@ angular.module('dispatcher').controller('DispatcherController', ['$scope', 'ngDi
 		$scope.dequeueRider = function(rider) {
 			rider.inQueue = false;
 			var index = $scope.riders.indexOf(rider);
-			console.log(index);
-			console.log('rider to dequeue: ' + rider);
 
 			rider.$update( function(response) {
 				$scope.riders.splice(index, 1);
@@ -227,19 +311,13 @@ angular.module('dispatcher').controller('DispatcherController', ['$scope', 'ngDi
 			var newRider = new RiderFactory({
 				netid: rider.netid,
 				time: rider.time,
-				startCoords: {
-					latitude: rider.startLatitude,
-					longitude: rider.startLongitude
-				},
-				endCoords: {
-					latitude: rider.endLatitude,
-					longitude: rider.endLongitude
-				},
-				phoneNumber: rider.phoneNumber
+				startCoords: $scope.marker.startCoords, 
+				endCoords: $scope.marker.endCoords,
 			});
 			newRider.$save(function(response) {
 				$scope.riders.push(newRider);
 				console.log('rider created');
+				$scope.setMarkerToDefault();
 				ngDialog.close();
 			}, function(errorResponse) {
 				$scope.saveError = errorResponse.data.message;

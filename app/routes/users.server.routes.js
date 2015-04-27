@@ -5,13 +5,18 @@
  */
 var passport = require('passport');
 
+var users = require('../../app/controllers/users.server.controller'),
+	riders = require('../../app/controllers/riders.server.controller');
+
 module.exports = function(app) {
 	// User Routes
-	var users = require('../../app/controllers/users.server.controller');
 
 	// Setting up the users profile api
 	app.route('/users/me').get(users.me);
-	app.route('/users').put(users.update);
+	app.route('/users')
+		.get(users.list) // all users can view
+		.post(users.create); 
+	// deleted above put with users.update
 	app.route('/users/accounts').delete(users.removeOAuthProvider);
 
 	// Setting up the users password api
@@ -52,6 +57,12 @@ module.exports = function(app) {
 	app.route('/auth/github').get(passport.authenticate('github'));
 	app.route('/auth/github/callback').get(users.oauthCallback('github'));
 
+	app.route('/users/:userId')
+		.get(users.read)
+		.put(users.updateUser)
+        .delete(users.delete);
+
 	// Finish by binding the user middleware
 	app.param('userId', users.userByID);
+
 };

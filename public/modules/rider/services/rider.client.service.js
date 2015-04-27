@@ -23,3 +23,15 @@ angular.module('rider').factory('BusFactory', ['$resource',
 		});
 	}
 ]);
+
+angular.module('rider').factory('StudentFactory', ['$resource',
+	function($resource) {
+		return $resource('/students/:studentID', {
+			studentID: '@_id'
+		}, {
+			update: {
+				method: 'PUT'
+			}
+		});
+	}
+]);

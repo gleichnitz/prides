@@ -38,34 +38,25 @@
 		 			coords='bus.coords'
 		 			visible="true"
 		 			icon='busMarker'>
-				</ui-gmap-google-map>
-			<!-- <map zoom="{{map.zoom}}" 
-		  		center="[{{myMap.center.latitude}},{{myMap.center.longitude}}]"
-		  		style="height: 100%; width: 66%%; z-index: -1;" 
-		  		class="rider-map">
-		  		<marker
-			      position="{{bus.location.latitude}}, {{bus.location.longitude}}"
-			      title="P-Rides Bus"
-			      animation="Animation.BOUNCE"
-			      draggable="false"
-			      visible="true"
-			      icon="/modules/rider/img/bus.png">
-			  	</marker>
-			  	<marker ng-repeat="rider in riders | orderBy:'time'"
-			  	  position="{{rider.startLatitude}}, {{rider.startLongitude}}"
-			      title="Stop"
-			      draggable="false"
-			      visible="true"
-			      icon="/modules/rider/img/{{$index+1}}_end.png">
-		  		</marker>
-		  		<marker ng-repeat="rider in riders | orderBy:'time'"
-			  	  position="{{rider.endLatitude}}, {{rider.endLongitude}}"
-			      title="Stop"
-			      draggable="false"
-			      visible="true"
-			      icon="/modules/rider/img/{{$index+1}}.png">
-		  		</marker>
-			</map> -->
+				</ui-gmap-marker >
+				<ui-gmap-marker 
+		 			idKey='-1'
+		 			coords='marker.startCoords'
+		 			visible='true'
+		 			events="marker.startEvents"
+		 			options="marker.options"
+		 			icon='marker.startIcon'>
+		 		</ui-gmap-marker>
+		 		<ui-gmap-marker 
+		 			idKey='-2'
+		 			coords='marker.endCoords'
+		 			visible='true'
+		 			events="marker.endEvents"
+		 			options="marker.options"
+		 			icon='marker.endIcon'>
+		 		</ui-gmap-marker>
+			</ui-gmap-google-map>
+			 
 		</div>
 	</div>
 
@@ -127,8 +118,6 @@
 		</div>
 		<form novalidate class="simple-form">
 		    netid: <input type="text" ng-model="rider.netid" required /><br />
-		    Pick up: <input type="number" ng-model="rider.startLatitude" required /> , <input type="number" ng-model="rider.startLongitude" required /> <br />
-		    Drop off: <input type="number" ng-model="rider.endLatitude" required /> , <input type="number" ng-model="rider.endLongitude" required /> <br />
 		    Phone number: <input type="tel" ng-model="rider.phoneNumber" /><br />
 		    Time: <input type="number" ng-model="rider.time" required /> <br />
 		    <div class="ngdialog-buttons">

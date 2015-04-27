@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('rider').controller('RiderController', ['$scope', '$interval', '$filter', '$http', '$location', 'Authentication', 'RiderFactory', 'BusFactory', 'uiGmapIsReady', 
-	function($scope, $interval, $filter, $http, $location, Authentication, RiderFactory, BusFactory, MapIsReady) {
+angular.module('rider').controller('RiderController', ['$scope', 'ngDialog', '$interval', '$filter', '$http', '$location', 'Authentication', 'RiderFactory', 'StudentFactory', 'BusFactory', 'uiGmapIsReady', 
+	function($scope, ngDialog, $interval, $filter, $http, $location, Authentication, RiderFactory, StudentFactory, BusFactory, MapIsReady) {
 
 		$scope.authentication = Authentication;
 
@@ -12,9 +12,11 @@ angular.module('rider').controller('RiderController', ['$scope', '$interval', '$
 		$scope.myMap = null;
 		$scope.bus = null;
 		$scope.riders = [];
-		$scope.user1 = null;
-		$scope.user = { id:'gtl', loc: {latitude: 40.3468, longitude: -74.6553}};
+		$scope.user = null;
+		$scope.request= null;
 		$scope.updatePromise = null;
+
+		$scope.longestTime = 0;
 
 		// Constants
 		$scope.map = { 
@@ -37,9 +39,9 @@ angular.module('rider').controller('RiderController', ['$scope', '$interval', '$
 			},
 			events: {
 				dragend: function (marker, eventName, args) {
-					$scope.user1.startCoords.latitude = marker.getPosition().lat();
-					$scope.user1.startCoords.longitude = marker.getPosition().lng();
-					$scope.updateRider($scope.user1);
+					$scope.user.startCoords.latitude = marker.getPosition().lat();
+					$scope.user.startCoords.longitude = marker.getPosition().lng();
+					$scope.updateRider($scope.user);
 				}
 			},
 			icon: '/modules/rider/img/start.png'
@@ -50,21 +52,12 @@ angular.module('rider').controller('RiderController', ['$scope', '$interval', '$
 			},
 			events: {
 				dragend: function (marker, eventName, args) {
-					$scope.user1.endCoords.latitude = marker.getPosition().lat();
-					$scope.user1.endCoords.longitude = marker.getPosition().lng();
-					$scope.updateRider($scope.user1);
+					$scope.user.endCoords.latitude = marker.getPosition().lat();
+					$scope.user.endCoords.longitude = marker.getPosition().lng();
+					$scope.updateRider($scope.user);
 				}
 			},
 			icon: '/modules/rider/img/end.png'
-		};
-
-		$scope.updateRider = function(user) {
-			user.$update(function(response) {
-				console.log('user updated ');
-			}, function(errorResponse) {
-				$scope.updateError = errorResponse.data.message;
-				console.log('user not updated');
-			});
 		};
 
 		// Calls when map is loaded
@@ -76,47 +69,54 @@ angular.module('rider').controller('RiderController', ['$scope', '$interval', '$
 		$scope.init = function() {
 			console.log('init');
 
+			ngDialog.open({
+				template: 'newStudentForm',
+				className: 'ngdialog-theme-default',
+				scope:$scope,
+				showClose: false,
+				closeByDocument: false
+			});
+
 			$scope.updateFromDatabase();
-
-			$scope.user1 = new RiderFactory({
-				netid: 'gtl',
-				inQueue: false
-			});
-			$scope.user1.$save(function(response) {
-				console.log('new user created ');
-			}, function(errorResponse) {
-				$scope.saveError = errorResponse.data.message;
-				console.log('user not created');
-			});
-			console.log($scope.user1.startCoords);
-
-			// $scope.user1.then(function() {
-			// 	$scope.user1.startCoords.latitude = $scope.user.loc.latitude + 0.0001;
-			// 	$scope.user1.startCoords.longitude = $scope.user.loc.longitude + 0.0001;
-			// 	$scope.user1.endCoords.latitude = $scope.user.loc.latitude - 0.0005;
-			// 	$scope.user1.endCoords.longitude = $scope.user.loc.longitude + 0.0003;
-			// });
 			
 			$scope.updatePromise = $interval(function() { $scope.updateFromDatabase(); }, 10000);
 		};
+
+		$scope.createNewStudent = function(student) {
+			/* ensure the form is filled out */
+			if (student === undefined || student.netid === undefined || student.phoneNumber == undefined) {
+				return;
+			}
+
+			var newStudent = new StudentFactory({
+				netid: student.netid,
+				phoneNumber: student.phoneNumber
+			});
+
+			newStudent.$save(function(response) {
+				console.log('new student created ');
+				$scope.user = newStudent;
+				ngDialog.close();
+			}, function(errorResponse) {
+				$scope.saveError = errorResponse.data.message;
+				console.log('student not created');
+				console.log(newStudent);
+			});
+
+			console.log($scope.user);
+		}
 
 		$scope.updateFromDatabase = function() {
 			var newRiders = [];
 			var riders = RiderFactory.query();
 
-			console.log('updated from database');
-
-			if ($scope.user1 !== null) {
-				$scope.user1 = RiderFactory.get({
-					riderID: $scope.user1._id
-				});
-			}
-			console.log($scope.user1);
-			
+			console.log('updated from database');			
 			
 			riders.$promise.then(function(riders) {
 				var ridersInQueue = [];
 				var riderIDs = [];
+
+				var longestTime = 0;
 
 				angular.forEach(riders, function(rider) {
 					if (rider.inQueue === true)  {
@@ -132,37 +132,23 @@ angular.module('rider').controller('RiderController', ['$scope', '$interval', '$
 					} else {
 						riderIDs.splice(index, 1);
 						ridersInQueue.splice(index, 1);
+						if (oldRider.time > longestTime)
+							longestTime = oldRider.time;
 					}
 				});
 
 				angular.forEach(ridersInQueue, function(rider) {
 					$scope.riders.push(rider);
+					if (rider.time > longestTime) 
+						longestTime = rider.time;
 				});	
+
+				$scope.longestTime = longestTime;
 			});	
 
 			var buses = BusFactory.query();
 			buses.$promise.then(function(riders) {
 				$scope.bus = buses[0];
-			});
-		};
-
-		$scope.addRiders = function() {
-			var riders = RiderFactory.query();
-			
-			riders.$promise.then(function(riders) {
-				angular.forEach(riders, function(rider) {
-					if ($scope.riders.indexOf(rider) === -1) { 
-						if (rider.inQueue === true) {
-							$scope.riders.push(rider);
-						}
-					}
-				});
-				if (riders.length > 0) {
-					$scope.user1.startCoords.latitude = $scope.user1.startCoords.latitude + 0.0001;
-					$scope.user1.startCoords.longitude = $scope.user1.startCoords.longitude + 0.0001;
-					$scope.user1.endCoords.latitude = $scope.riders[0].endCoords.latitude;
-					$scope.user1.endCoords.longitude = $scope.riders[0].endCoords.longitude;
-				}
 			});
 		};
 
@@ -185,37 +171,52 @@ angular.module('rider').controller('RiderController', ['$scope', '$interval', '$
 		};
 
 		$scope.request = function() {
-			$scope.user1.inQueue = true;
-			$scope.user1.time = $scope.riders[$scope.riders.length - 1].time + 5;
-
-			$scope.user1.$update(function(response) {
-				console.log('added to queue ');
-			}, function(errorResponse) {
-				$scope.saveError = errorResponse.data.message;
-				$scope.user1.inQueue = false;
-				console.log('rider not added');
+			var rider = new RiderFactory({
+				inQueue: true,
+				time: $scope.longestTime + 5,
+				netid: $scope.user.netid,
+				startCoords: $scope.user.startCoords,
+				endCoords: $scope.user.endCoords,
+				user: $scope.user._id
 			});
 
+			rider.$save(function(response) {
+				console.log('added to queue ');
+				$scope.request = rider;
+			}, function(errorResponse) {
+				$scope.saveError = errorResponse.data.message;
+				console.log('rider not added');
+			});
+			console.log('out of save function');
 			$scope.endMarker.options.draggable = false;
 			$scope.startMarker.options.draggable = false;
 		};
 
 		$scope.cancel = function() {
-			var oldQueue = $scope.user1.inQueue;
-			$scope.user1.inQueue = false;
-			$scope.user1.cancelled = true;
+			var oldQueue = $scope.request.inQueue;
+			$scope.request.inQueue = false;
+			$scope.request.cancelled = true;
 
-			$scope.user1.$update(function(response) {
+			$scope.request.$update(function(response) {
 				console.log('removed from queue ');
 			}, function(errorResponse) {
 				$scope.saveError = errorResponse.data.message;
-				$scope.user1.inQueue = oldQueue;
-				$scope.user1.cancelled = false;
+				$scope.request.inQueue = oldQueue;
+				$scope.request.cancelled = false;
 				console.log('rider not removed');
 			});
 
 			$scope.endMarker.options.draggable = true;
 			$scope.startMarker.options.draggable = true;
+		};
+
+		$scope.updateRider = function(user) {
+			user.$update(function(response) {
+				console.log('user updated ');
+			}, function(errorResponse) {
+				$scope.updateError = errorResponse.data.message;
+				console.log('user not updated');
+			});
 		};
 
 	}

@@ -134,6 +134,11 @@ ApplicationConfiguration.registerModule('rider');
 ApplicationConfiguration.registerModule('users');
 'use strict';
 
+// Use Application configuration module to register a new module
+ApplicationConfiguration.registerModule('student');
+
+'use strict';
+
 // Configuring the Articles module
 angular.module('articles').run(['Menus',
 	function(Menus) {

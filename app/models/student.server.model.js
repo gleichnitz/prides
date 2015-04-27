@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
 /**
  * Rider Schema
  */
-var RiderSchema = new Schema({
+var StudentSchema = new Schema({
 	created: {
 		type: Date,
 		default: Date.now
@@ -21,43 +21,46 @@ var RiderSchema = new Schema({
 		trim: true,
 		required: 'netid cannot be blank'
 	},
+    phoneNumber: {
+		type: Number,
+		default: '9495545306',
+		trim: true,
+		required: 'phone number cannot be blank'
+	},
 	startCoords: {
 		latitude: {
 			type: Number,
-			default: 40.3467
+			default: '40.3467'
 		}, 
 		longitude: {
 			type: Number,
-			default: -74.6551
+			default: '-74.6551'
 		}	
 	},
 	endCoords: {
 		latitude: {
 			type: Number,
-			default: 40.3469
+			default: '40.3469'
 		}, 
 		longitude: {
 			type: Number,
-			default: -74.6552
+			default: '-74.6552'
 		}	
 	},
-	time: {
-		type: Number,
-		default: '30',
-		trim: true
+	currentLoc: {
+		latitude: {
+			type: Number,
+			default: '40.3469'
+		}, 
+		longitude: {
+			type: Number,
+			default: '-74.6552'
+		}	
 	},
-	inQueue: {
-		type: Boolean,
-		default: true
-	},
-	cancelled: {
-		type: Boolean,
-		default: false
-	},
-	user: {
-		type: Schema.ObjectId,
-		ref: 'User'
+	requests:  {
+		type: [Schema.ObjectId],
+		ref: 'Rider'
 	}
 });
 
-mongoose.model('Rider', RiderSchema);
+mongoose.model('Student', StudentSchema);
