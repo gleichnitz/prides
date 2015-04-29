@@ -84,7 +84,7 @@ angular.module('rider').controller('RiderController', ['$scope', 'ngDialog', '$i
 
 		$scope.createNewStudent = function(student) {
 			/* ensure the form is filled out */
-			if (student === undefined || student.netid === undefined || student.phoneNumber == undefined) {
+			if (student === undefined || student.netid === undefined || student.phoneNumber === undefined) {
 				return;
 			}
 
@@ -104,7 +104,7 @@ angular.module('rider').controller('RiderController', ['$scope', 'ngDialog', '$i
 			});
 
 			console.log($scope.user);
-		}
+		};
 
 		$scope.updateFromDatabase = function() {
 			var newRiders = [];
