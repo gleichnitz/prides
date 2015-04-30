@@ -188,5 +188,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('test:server', ['env:test', 'mochaTest']);
 	grunt.registerTask('test:client', ['env:test', 'karma:unit']);
 
+	grunt.registerTask('generate', ['less:production', 'copy:fonts']);
+
 	grunt.registerTask('heroku:production', 'generate');
 };
