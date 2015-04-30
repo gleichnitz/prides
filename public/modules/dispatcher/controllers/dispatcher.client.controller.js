@@ -105,8 +105,8 @@ angular.module('dispatcher').controller('DispatcherController', ['$scope', 'ngDi
 			  	if (data['data']['84'] !== undefined) {
 					var location = data['data']['84'][0]['location'];
 					$scope.bus.coords = {
-						latitude: location['lat'] - 0.0001,
-						longitude: location['lng'] - 0.0001
+						latitude: location.lat - 0.0001,
+						longitude: location.lng - 0.0001
 					};
 					console.log($scope.bus.coords);
 					$scope.updateBus($scope.bus);
