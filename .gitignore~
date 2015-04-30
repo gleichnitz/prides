@@ -59,4 +59,4 @@ mongod
 *.bak
 *.swp
 logs/
-
+build/

@@ -79,7 +79,7 @@ angular.module('dispatcher').controller('DispatcherController', ['$scope', 'ngDi
 				latitude: $scope.defaultEnd.latitude,
 				longitude: $scope.defaultEnd.longitude
 			};
-		}
+		};
 
 		$scope.updateFromDatabase = function() {
 			var newRiders = [];
