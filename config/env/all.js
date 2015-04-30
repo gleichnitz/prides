@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = {
+	db: 'mongodb://gleichnitz:sunshine@ds053148.mongolab.com:53148/heroku_app18934798',
 	app: {
 		title: 'MEAN.JS',
 		description: 'Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js',
