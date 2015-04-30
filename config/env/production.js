@@ -1,8 +1,13 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://gleichnitz:sunshine@ds031852.mongolab.com:31852/heroku_app18934798',
-
+	db: {
+		uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/mean',
+		options: {
+			user: '',
+			pass: ''
+		}
+	},
 	// db: 'mongodb://gleichnitz:sunshine@ds053148.mongolab.com:53148/heroku_app18934798',
 	log: {
 		// Can specify one of 'combined', 'common', 'dev', 'short', 'tiny'
