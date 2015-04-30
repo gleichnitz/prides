@@ -8,6 +8,7 @@ module.exports = {
 			pass: ''
 		}
 	},
+	// db: 'mongodb://gleichnitz:sunshine@ds053148.mongolab.com:53148/heroku_app18934798',
 	log: {
 		// Can specify one of 'combined', 'common', 'dev', 'short', 'tiny'
 		format: 'combined',
