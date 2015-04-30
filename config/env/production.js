@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://gleichnitz:sunshine@ds031852.mongolab.com:31852/prides',
+	db: 'mongodb://gleichnitz:sunshine@ds031852.mongolab.com:31852/heroku_app18934798',
 
 	// db: 'mongodb://gleichnitz:sunshine@ds053148.mongolab.com:53148/heroku_app18934798',
 	log: {
