@@ -182,7 +182,7 @@ module.exports = function(grunt) {
 
 	// Build task(s).
 	grunt.registerTask('build', ['lint', 'loadConfig', 'ngAnnotate', 'less']);
-	grunt.registerTask('heroku:production', '');
+
 	// Test task.
 	grunt.registerTask('test', ['test:server', 'test:client']);
 	grunt.registerTask('test:server', ['env:test', 'mochaTest']);
